@@ -17,9 +17,11 @@ def _load_app() -> None:
     """Import or reload the app module so Streamlit renders reliably."""
 
     if MODULE_NAME in sys.modules:
-        importlib.reload(sys.modules[MODULE_NAME])
-    else:
-        importlib.import_module(MODULE_NAME)
+        # Drop cached module so Streamlit runs fresh import on rerun.
+        del sys.modules[MODULE_NAME]
+        importlib.invalidate_caches()
+
+    importlib.import_module(MODULE_NAME)
 
 
 _load_app()
