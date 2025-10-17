@@ -57,7 +57,28 @@ PAGE_ICON = os.getenv("PAGE_ICON", "📊")
 
 st.set_page_config(page_title=APP_TITLE, page_icon=PAGE_ICON, layout="wide")
 
-df = load_grant_payments()
+
+@st.cache_data(show_spinner="Loading grant payments...")
+def get_grant_payments_cached() -> pd.DataFrame:
+    return load_grant_payments()
+
+
+@st.cache_data(show_spinner="Loading active non-profits...")
+def get_nonprofits_active_cached() -> pd.DataFrame:
+    return load_nonprofits_active()
+
+
+@st.cache_data(show_spinner="Loading Alberta Activity Index...")
+def get_alberta_activity_index_cached() -> pd.DataFrame:
+    return load_alberta_activity_index()
+
+
+@st.cache_data(show_spinner="Loading employment rates...")
+def get_employment_rates_cached() -> pd.DataFrame:
+    return load_employment_rates()
+
+
+df = get_grant_payments_cached()
 
 # --- Main page ---
 st.title(APP_TITLE)
@@ -427,7 +448,7 @@ st.markdown(
 try:
     # Load active non-profits and merge with filtered grants
     with st.spinner("Loading non-profit data..."):
-        nonprofits_active = load_nonprofits_active()
+        nonprofits_active = get_nonprofits_active_cached()
         nonprofit_grants = merge_grants_with_nonprofits(
             filtered,
             nonprofits_active,
@@ -516,7 +537,7 @@ try:
         st.markdown("---")
         st.subheader("Actual Economic Value")
         try:
-            activity_index_df = load_alberta_activity_index()
+            activity_index_df = get_alberta_activity_index_cached()
             st.markdown(
                 """
                 **Quick insight:** Grant momentum moves in tandem with the
@@ -552,7 +573,7 @@ try:
         st.markdown("---")
         st.subheader("Employment Rate Trends by Sector")
         try:
-            employment_df = load_employment_rates()
+            employment_df = get_employment_rates_cached()
             st.markdown(
                 """
                 **Quick insight:** Health, education, agriculture, and public
