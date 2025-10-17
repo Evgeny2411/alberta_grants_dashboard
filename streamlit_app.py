@@ -2,10 +2,24 @@
 Streamlit Community Cloud entry point.
 
 This file acts as the main entry point for Streamlit Community Cloud deployment.
-It simply imports and runs the main app from src/app.py.
+It imports the main app module and ensures it executes on every rerun.
 """
 
-# Import the main app
-from src.app import *  # noqa: F401, F403
+from __future__ import annotations
 
-# The app will run automatically when this file is executed by streamlit
+import importlib
+import sys
+
+MODULE_NAME = "src.app"
+
+
+def _load_app() -> None:
+    """Import or reload the app module so Streamlit renders reliably."""
+
+    if MODULE_NAME in sys.modules:
+        importlib.reload(sys.modules[MODULE_NAME])
+    else:
+        importlib.import_module(MODULE_NAME)
+
+
+_load_app()
