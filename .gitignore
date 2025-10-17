@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+.eggs/
+.build/
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+dist/
+build/
+.cache/
+.pytest_cache/
+.ipynb_checkpoints
+*.pyc
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Streamlit
+.streamlit/secrets.toml
+
+# VS Code
+.vscode/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# Data (if you want to exclude large data files)
+# Uncomment the following if data files are too large for git
+# src/data/*.csv
+# !src/data/README.md
+
+# OS
+Thumbs.db
+Desktop.ini
